@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Users;
 
+use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Interfaces\Users\UserServiceInterface;
@@ -26,15 +27,9 @@ class UserController extends Controller
             $data = $request->validated();
             $service->createUser($data);
 
-            return response()->json([
-                'statusCode' => 201,
-                'message' => 'Usuario Creado Correctamente'
-            ]);
+            return ResponseHandler::success(null,'Usuario Creado Correctamente', 201);
         } catch (\Throwable $th) {
-            return response()->json([
-                'statusCode' => $th->getCode(),
-                'message' => $th->getMessage()
-            ]);
+            return ResponseHandler::error($th);
         }
     }
 

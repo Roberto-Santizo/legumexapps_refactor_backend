@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Permissions;
 
+use App\Helpers\ErrorHandler;
+use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Permissions\CreatePermissionRequest;
 use App\Http\Resources\Permissions\PaginatedPermissionsResource;
@@ -22,16 +24,9 @@ class PermissionController extends Controller
 
             $data = $limit ? new PaginatedPermissionsResource($permissions) : PermissionsResource::collection($permissions);
 
-            return response()->json([
-                'statusCode' => 201,
-                'message' => 'Permisos Obtenidos Exitosamente',
-                'data' => $data,
-            ]);
+            return ResponseHandler::success($data, 'Permisos Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'statusCode' => $th->getCode(),
-                'message' => $th->getMessage(),
-            ]);
+            return ResponseHandler::error($th);
         }
     }
 
@@ -44,15 +39,9 @@ class PermissionController extends Controller
             $data = $request->validated();
             $service->createPermission($data);
 
-            return response()->json([
-                'statusCode' => 201,
-                'message' => 'Permiso Creado Exitosamente',
-            ]);
+            return ResponseHandler::success(null, 'Permiso Creado Correctamente', 201);
         } catch (\Throwable $th) {
-            return response()->json([
-                'statusCode' => $th->getCode(),
-                'message' => $th->getMessage(),
-            ]);
+            return ResponseHandler::error($th);
         }
     }
 }
