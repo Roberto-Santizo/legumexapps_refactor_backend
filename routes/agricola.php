@@ -3,10 +3,12 @@
 use App\Http\Controllers\Agricola\CdpController;
 use App\Http\Controllers\Agricola\CropController;
 use App\Http\Controllers\Agricola\FincaController;
+use App\Http\Controllers\Agricola\FincaGroupController;
 use App\Http\Controllers\Agricola\LoteController;
 use App\Http\Controllers\Agricola\RecipeController;
 use App\Http\Controllers\Agricola\TaskController;
 use App\Http\Controllers\Agricola\WeeklyPlanController;
+
 use Illuminate\Support\Facades\Route;
 
 //CRUDS
@@ -18,6 +20,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::apiResource('/recipes', RecipeController::class);
     Route::apiResource('/cdps', CdpController::class);
     Route::apiResource('/weekly-plans', WeeklyPlanController::class);
+    Route::apiResource('/finca-groups', FincaGroupController::class);
 });
 
 //FUNCTIONALITYS
