@@ -7,7 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\WeeklyPlanTasks\CreateWeeklyPlanTaskRequest;
 use App\Http\Requests\Agricola\WeeklyPlanTasks\UpdateWeeklyPlanTaskRequest;
 use App\Http\Resources\Agricola\WeeklyPlanTaskResource;
+use App\Http\Resources\Agricola\WeeklyPlanTasksByLoteCollection;
+use App\Http\Resources\Agricola\WeeklyPlanTasksByLoteResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksForCalendarResource;
+use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskServiceInterface;
 use Illuminate\Http\Request;
 
@@ -104,13 +107,24 @@ class WeeklyPlanTaskController extends Controller
         }
     }
 
-    public function getWeeklyPlanTasksForCalendar(string $id, WeeklyPlanTaskServiceInterface $service)
+    public function getWeeklyPlanTasksForCalendar(string $weeklyPlanId, WeeklyPlanTaskServiceInterface $service)
     {
         try {
-            $tasks = $service->getWeeklyPlanTasksForCalendar($id);
+            $tasks = $service->getWeeklyPlanTasksForCalendar($weeklyPlanId);
             $data = WeeklyPlanTasksForCalendarResource::collection($tasks);
 
             return ResponseHandler::success($data, 'Tareas Obtenidas Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function getWeeklyPlanTasksByLote(string $weeklyPlanId, WeeklyPlanServiceInterface $weeklyPlanService)
+    {
+        try {
+            $weeklyPlan = $weeklyPlanService->getWeeklyPlanById($weeklyPlanId);
+
+            return ResponseHandler::success(new WeeklyPlanTasksByLoteResource($weeklyPlan), 'Tareas Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

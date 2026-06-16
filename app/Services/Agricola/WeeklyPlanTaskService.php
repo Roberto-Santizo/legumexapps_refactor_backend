@@ -4,7 +4,7 @@ namespace App\Services\Agricola;
 
 use App\Errors\BadRequestError;
 use App\Errors\NotAcceptable;
-use App\Errors\NotFoundError;
+use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskInsumoServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskServiceInterface;
 use App\Models\Agricola\WeeklyPlanTask;
@@ -16,6 +16,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     public function __construct(
         private readonly WeeklyPlanTaskInsumoServiceInterface $insumoService,
         private readonly WeeklyPlanTaskEmployeeService $employeeService,
+        private readonly WeeklyPlanServiceInterface $weeklyPlanService,
     ) {}
 
     #[Override]
@@ -40,11 +41,17 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     }
 
     #[Override]
+    public function getWeeklyPlanTasksByLote(?string $id)
+    {
+        if (!$id) throw new BadRequestError("El ID del plan es requerido");
+        $plan = $this->weeklyPlanService->getWeeklyPlanById($id);
+        return $plan;
+    }
+
+    #[Override]
     public function getWeeklyPlanTaskById(string $id)
     {
-        $task = WeeklyPlanTask::find($id, ['*']);
-        if (!$task) throw new NotFoundError('La tarea no existe');
-        return $task;
+        throw new \Exception('Not implemented');
     }
 
     #[Override]

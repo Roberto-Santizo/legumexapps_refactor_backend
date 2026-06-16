@@ -35,16 +35,17 @@ Route::middleware('jwt.auth')->group(function () {
 //FUNCTIONALITYS
 Route::middleware('jwt.auth')->group(function () {
     //TASKS
-    Route::post('/tasks/uploadFile',                                            [TaskController::class, 'uploadFile']                               );
+    Route::post('/tasks/uploadFile',                                        [TaskController::class, 'uploadFile']                               );
     
     //WEEKLY PLANS
-    Route::post('/weekly-plans/uploadTasks/{id}',                               [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']            );
+    Route::post('/weekly-plans/uploadTasks/{id}',                           [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']            );
     
     //WEEKLY PLANS EMPLOYEE
-    Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',         [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']   );
+    Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',     [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']   );
 
     //WEEKLY PLAN TASKS
-    Route::get('/weekly-plan-tasks/getTasksForCalendar/{id}',                   [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksForCalendar']  );
-    Route::post('/weekly-plan-tasks/startTask/{id}',                            [WeeklyPlanTaskController::class, 'startWeeklyPlanTask']            );
-    Route::post('/weekly-plan-tasks/closeTask/{id}',                            [WeeklyPlanTaskController::class, 'closeWeeklyPlanTask']            );
+    Route::get('/weekly-plan-tasks/getTasksForCalendar/{weeklyPlanId}',     [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksForCalendar']  );
+    Route::get('/weekly-plan-tasks/getTasksByLote/{weeklyPlanId}',          [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksByLote']       );
+    Route::post('/weekly-plan-tasks/startTask/{id}',                        [WeeklyPlanTaskController::class, 'startWeeklyPlanTask']            );
+    Route::post('/weekly-plan-tasks/closeTask/{id}',                        [WeeklyPlanTaskController::class, 'closeWeeklyPlanTask']            );
 });
