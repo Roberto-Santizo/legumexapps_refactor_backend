@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Errors\BadRequestError;
 use App\Interfaces\Auth\AuthServiceInterface;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -11,10 +12,16 @@ class AuthService implements AuthServiceInterface
     {
         $token = JWTAuth::attempt($data);
 
-        if(!$token) {
-            throw new \Exception('Credenciales inválidas', 401);
+        if (!$token) {
+            throw new BadRequestError('Credenciales inválidas');
         }
-        
-        return $token;
+
+        $user = auth()->user();
+
+        return [
+            'name' => $user->name,
+            'role' => $user->role ?? 'admin',
+            'token' => $token
+        ];
     }
 }

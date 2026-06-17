@@ -21,7 +21,7 @@ class FincaGroupService implements FincaGroupServiceInterface
     {
         $query = FincaGroup::query();
 
-        if($limit) return $query->paginate($limit);
+        if ($limit) return $query->paginate($limit);
 
         return $query->get();
     }
@@ -30,8 +30,15 @@ class FincaGroupService implements FincaGroupServiceInterface
     public function getGroupById(string $id)
     {
         $group = FincaGroup::where(['id' => $id])->first();
-        if(!$group) throw new NotFoundError("El grupo no existe");
+        if (!$group) throw new NotFoundError("El grupo no existe");
         return $group;
-        
+    }
+
+    #[Override]
+    public function getGroupByCode(string $code)
+    {
+        $group = FincaGroup::where(['code' => $code])->first();
+        if (!$group) throw new NotFoundError("El grupo no existe");
+        return $group;
     }
 }

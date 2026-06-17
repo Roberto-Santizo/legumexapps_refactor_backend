@@ -3,13 +3,17 @@
 namespace App\Helpers;
 
 use App\Errors\ApiException;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ResponseHandler
 {
     private static function paginatedResponse(mixed $data, string $message, int $statusCode)
     {
+
         $paginator = $data->resource;
+        $resolved = $data->resolve();
+
         return response()->json([
             'statusCode' => $statusCode,
             'message' => $message,
@@ -20,17 +24,27 @@ class ResponseHandler
         ], $statusCode);
     }
 
-    public static function success(mixed $data, string $message, int $statusCode)
-    {
-        if (is_object($data) && property_exists($data, 'resource') && $data->resource instanceof LengthAwarePaginator) {
-            return self::paginatedResponse($data, $message, $statusCode);
+    public static function success( mixed $data, string $message, int $statusCode) {
+        if ($data instanceof JsonResource) {
+            $data = $data->resolve();
         }
 
-        return response()->json([
+        $response = [
             'statusCode' => $statusCode,
             'message' => $message,
-            'data' => $data
-        ], $statusCode);
+        ];
+
+        if (is_array($data) && isset($data['data']) && count($data) > 1) {
+            $response['data'] = $data['data'];
+
+            unset($data['data']);
+
+            $response = array_merge($response, $data);
+        } else {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, $statusCode);
     }
 
     public static function error(\Throwable $error)

@@ -23,11 +23,11 @@ class UpdateSupplyRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('supply')?->id ?? $this->route('supply');
+        // $id = $this->route('supply')?->id ?? $this->route('supply');
 
         return [
             'name' => ['required', 'string'],
-            'code' => ['required', 'string',  Rule::unique('insumos', 'code')->ignore($id)],
+            'code' => ['required', 'string',  Rule::unique('insumos', 'code')->ignore($this->route('supply'), 'code')],
             'measure' => ['required', 'string']
         ];
     }

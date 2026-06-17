@@ -51,7 +51,7 @@ class SupplyController extends Controller
     public function show(string $id, SupplyServiceInterface $service)
     {
         try {
-            $supply = $service->getSupplyById($id);
+            $supply = $service->getSupplyByCode($id);
 
             return ResponseHandler::success($supply, 'Insumo Creado Correctamente', 200);
         } catch (\Throwable $th) {
@@ -67,7 +67,7 @@ class SupplyController extends Controller
         try {
             $data = $request->validated();
 
-            $supply = $service->updateSupplyById($data, $id);
+            $supply = $service->updateSupplyByCode($data, $id);
 
             return ResponseHandler::success($supply, 'Insumo Actualizado Correctamente', 200);
         } catch (\Throwable $th) {

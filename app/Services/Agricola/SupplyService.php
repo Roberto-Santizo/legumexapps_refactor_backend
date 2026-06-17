@@ -35,10 +35,18 @@ class SupplyService implements SupplyServiceInterface
     }
 
     #[Override]
-    public function updateSupplyById(array $data, string $id)
+    public function getSupplyByCode(string $code)
     {
-        $this->getSupplyById($id);
-        $supply = Supply::where('id', '=', $id)->update($data);
+        $supply = Supply::where('code', '=', $code, null)->first();
+        if (!$supply) throw new NotFoundError("Insumo no Encontrado");
+        return $supply;
+    }
+
+    #[Override]
+    public function updateSupplyByCode(array $data, string $code)
+    {
+        $this->getSupplyByCode($code);
+        $supply = Supply::where('code', '=', $code, null)->update($data);
         return $supply;
     }
 }

@@ -51,7 +51,7 @@ class LoteController extends Controller
     public function show(string $id, LoteServiceInterface $service)
     {
         try {
-            $lote = $service->getLoteById($id);
+            $lote = $service->getLoteByCode($id);
             return ResponseHandler::success(new LoteResource($lote), 'Lote Obtenido Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
@@ -66,7 +66,7 @@ class LoteController extends Controller
         try {
             $data = $request->validated();
 
-            $service->updateLoteById($data, $id);
+            $service->updateLoteByCode($data, $id);
 
             return ResponseHandler::success(null, 'Lote Actualizado Correctamente', 200);
         } catch (\Throwable $th) {

@@ -5,6 +5,7 @@ namespace App\Services\Agricola;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\LoteServiceInterface;
 use App\Models\Agricola\Lote;
+use Override;
 
 class LoteService implements LoteServiceInterface
 {
@@ -35,10 +36,22 @@ class LoteService implements LoteServiceInterface
         return $lote;
     }
 
-    public function updateLoteById(array $data, string $id)
+    #[Override]
+    public function getLoteByCode(string $code)
     {
-        $this->getLoteById($id);
-        $lote = Lote::where('id', '=', $id, null)->update($data);
+        $lote = Lote::where('name', '=', $code, null)->first();
+
+        if (!$lote) {
+            throw new NotFoundError("El lote no existe");
+        }
+
+        return $lote;
+    }
+
+    public function updateLoteByCode(array $data, string $code)
+    {
+        $this->getLoteByCode($code);
+        $lote = Lote::where('name', '=', $code, null)->update($data);
 
         return $lote;
     }

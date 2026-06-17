@@ -49,10 +49,10 @@ class FincaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id,  FincaServiceInterface $service)
+    public function show(string $id, FincaServiceInterface $service)
     {
         try {
-            $finca = $service->getFincaById($id);
+            $finca = $service->getFincaByCode($id);
 
             return ResponseHandler::success($finca, 'Finca Obtenida Correctamente', 200);
         } catch (\Throwable $th) {
@@ -67,7 +67,7 @@ class FincaController extends Controller
     {
         try {
             $data = $request->validated();
-            $service->updateFincaById($data, $id);
+            $service->updateFincaByCode($data, $id);
 
             return ResponseHandler::success(null, 'Finca Actualizada Correctamente', 200);
         } catch (\Throwable $th) {

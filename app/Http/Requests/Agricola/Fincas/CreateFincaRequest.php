@@ -25,7 +25,7 @@ class CreateFincaRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'code' => ['required', 'string', 'unique:fincas,code'],
-            'terminal_id'=> ['required', 'integer'],
+            'terminal_id'=> ['required', 'numeric'],
         ];
     }
 

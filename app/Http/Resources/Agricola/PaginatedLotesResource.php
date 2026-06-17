@@ -15,6 +15,7 @@ class PaginatedLotesResource extends JsonResource
     public function toArray(Request $request): array
     {
         $lotes = LoteResource::collection($this->items());
+        
         return [
             'data' => $lotes,
             'total' => $this->total(),

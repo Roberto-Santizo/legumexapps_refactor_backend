@@ -50,7 +50,7 @@ class FincaGroupController extends Controller
     public function show(string $id, FincaGroupServiceInterface $service)
     {
         try {
-            $group = $service->getGroupById($id);
+            $group = $service->getGroupByCode($id);
             $data = new FincaGroupResource($group);
 
             return ResponseHandler::success($data, 'Grupo Obtenido Correctamente', 200);

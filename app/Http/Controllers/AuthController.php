@@ -13,9 +13,9 @@ class AuthController extends Controller
     {
         try {
             $data = $request->validated();
-            $token = $authService->login($data);
+            $user = $authService->login($data);
 
-            return ResponseHandler::success($token, 'Sesión Iniciada Correctamente', 200);
+            return ResponseHandler::success($user, 'Sesión Iniciada Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
@@ -24,13 +24,10 @@ class AuthController extends Controller
     public function checkstatus()
     {
         try {
-            $payload = JWTAuth::getPayload();
-            $data = [
-                'id' => $payload->get('id'),
-                'name' => $payload->get('name'),
-                'role' => $payload->get('role'),
-                'username' => $payload->get('username'),
-            ];
+            $user = auth()->user();
+            $token = JWTAuth::fromUser($user);
+
+            $data = ['name' => $user->name, 'role' => $user->role ?? 'admin', 'token' => $token];
 
             return ResponseHandler::success($data, 'Usuario Obtenido Correctamente', 200);
         } catch (\Throwable $th) {

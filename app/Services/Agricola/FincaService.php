@@ -5,6 +5,7 @@ namespace App\Services\Agricola;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\FincaServiceInterface;
 use App\Models\Agricola\Finca;
+use Override;
 
 class FincaService implements FincaServiceInterface
 {
@@ -26,17 +27,27 @@ class FincaService implements FincaServiceInterface
 
     public function getFincaById(string $id)
     {
-        $finca = Finca::find($id, ['id', 'name', 'code']);
+        $finca = Finca::find($id, ['id', 'name', 'code', 'terminal_id']);
         if (!$finca) {
             throw new NotFoundError("Finca No Encontrada");
         }
         return $finca;
     }
 
-    public function updateFincaById(array $data, string $id)
+    #[Override]
+    public function getFincaByCode(string $code)
     {
-        $this->getFincaById($id);
-        $finca = Finca::where('id', '=', $id, null)->update($data);
+        $finca = Finca::where('code', '=', $code, null)->first(['id', 'name', 'code', 'terminal_id']);
+        if (!$finca) {
+            throw new NotFoundError("Finca No Encontrada");
+        }
+        return $finca;
+    }
+
+    public function updateFincaByCode(array $data, string $code)
+    {
+        $this->getFincaByCode($code);
+        $finca = Finca::where('code', '=', $code, null)->update($data);
         return $finca;
     }
 }
