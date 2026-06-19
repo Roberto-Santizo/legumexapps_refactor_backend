@@ -9,5 +9,6 @@ interface TaskServiceInterface
     public function getTaskById(string $id);
     public function getTaskByCode(string $code);
     public function updateTaskById(array $data, string $id);
+    public function updateTaskByCode(array $data, string $code);
     public function uploadTasksFromFile(mixed $file);
 }

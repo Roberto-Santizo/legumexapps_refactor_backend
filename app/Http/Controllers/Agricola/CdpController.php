@@ -51,7 +51,7 @@ class CdpController extends Controller
     public function show(string $id, CdpServiceInterface $service)
     {
         try {
-            $cdp = $service->getCdpById($id);
+            $cdp = $service->getCdpByCode($id);
             $data = new CdpResource($cdp);
 
             return ResponseHandler::success($data, 'Cdp Obtenido Correctamente', 200);
@@ -67,7 +67,7 @@ class CdpController extends Controller
     {
         try {
             $data = $request->validated();
-            $cdp = $service->updateCdpById($data, $id);
+            $cdp = $service->updateCdpByCode($data, $id);
 
             return ResponseHandler::success($cdp, 'Cdp Actualizado Correctamente', 200);
         } catch (\Throwable $th) {

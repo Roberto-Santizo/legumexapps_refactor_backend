@@ -8,6 +8,7 @@ use App\Interfaces\Agricola\TaskServiceInterface;
 use App\Models\Agricola\Task;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Override;
 
 class TaskService implements TaskServiceInterface
 {
@@ -41,7 +42,9 @@ class TaskService implements TaskServiceInterface
     public function getTaskByCode(string $code)
     {
         $task = Task::where('code', '=', $code, null)->first();
-
+        if (!$task) {
+            throw new NotFoundError("La tarea no existe", 404);
+        }
         return $task;
     }
 
@@ -49,6 +52,13 @@ class TaskService implements TaskServiceInterface
     {
         $this->getTaskById($id);
         $task = Task::where('id', '=', $id, null)->update($data);
+        return $task;
+    }
+
+    public function updateTaskByCode(array $data, string $code)
+    {
+        $this->getTaskByCode($code);
+        $task = Task::where('code', '=', $code, null)->update($data);
         return $task;
     }
 

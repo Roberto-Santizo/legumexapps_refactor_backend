@@ -26,7 +26,6 @@ class TasksImport implements ToCollection, WithHeadingRow
         $tasks = $this->service->getTasks(null);
 
         foreach ($collection as $row) {
-            dd($row);
             $task = $tasks->where('code', $row['codigo'])->first();
             if ($task) throw new BadRequestError("El código {$row['codigo']} ya existe");
             $data = $this->formatData($row);

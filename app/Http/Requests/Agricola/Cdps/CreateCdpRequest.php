@@ -28,7 +28,8 @@ class CreateCdpRequest extends FormRequest
             'lote_id' => ['required', 'numeric', 'exists:lotes,id'],
             'recipe_id' => ['required', 'numeric', 'exists:recipes,id'],
             'crop_id' => ['required', 'numeric', 'exists:crops,id'],
-            'start_date' => ['required', 'date']
+            'start_date' => ['required', 'date'],
+            'end_date' => ['sometimes', 'date']
         ];
     }
 
@@ -51,6 +52,7 @@ class CreateCdpRequest extends FormRequest
             'crop_id.exists' => 'El cultivo no existe',
             'start_date.required' => 'La fecha de inicio es requerida',
             'start_date.date' => 'La fecha de inicio debe de tener formato de fecha',
+            'end_date.date' => 'La fecha final debe de tener formato de fecha',
         ];
     }
 }

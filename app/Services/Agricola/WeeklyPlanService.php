@@ -44,6 +44,7 @@ class WeeklyPlanService implements WeeklyPlanServiceInterface
     public function getWeeklyPlans(?string $limit)
     {
         $query = WeeklyPlan::query();
+        $query->orderBy('created_at', 'DESC');
         if ($limit) return $query->paginate($limit);
 
         return $query->get();
@@ -52,7 +53,7 @@ class WeeklyPlanService implements WeeklyPlanServiceInterface
     #[Override]
     public function getWeeklyPlanById(string $id)
     {
-        $weekl_plan = WeeklyPlan::find($id, ['id', 'week', 'year', 'finca_id']);
+        $weekl_plan = WeeklyPlan::find($id, ['*']);
         if (!$weekl_plan) throw new NotFoundError("El plan semanal no existe");
         return $weekl_plan;
     }
@@ -69,6 +70,9 @@ class WeeklyPlanService implements WeeklyPlanServiceInterface
     #[Override]
     public function updateWeeklyPlan(array $data, string $id)
     {
-        throw new \Exception('Not implemented');
+        $weekly_plan = $this->getWeeklyPlanById($id);
+        $weekly_plan->update($data);
+        $weekly_plan->save();
+        return true;
     }
 }

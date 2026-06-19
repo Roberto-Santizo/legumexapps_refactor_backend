@@ -26,7 +26,8 @@ class WeeklyPlanTaskController extends Controller
             $limit = $request->query('limit');
 
             $tasks = $service->getWeeklyPlanTasks($limit, $id);
-            return ResponseHandler::success($tasks, 'Tareas Obtenidas Correctamente', 200);
+            
+            return ResponseHandler::success(WeeklyPlanTaskResource::collection($tasks), 'Tareas Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

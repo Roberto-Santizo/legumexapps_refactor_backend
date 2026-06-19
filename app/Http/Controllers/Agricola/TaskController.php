@@ -52,9 +52,9 @@ class TaskController extends Controller
     public function show(string $id, TaskServiceInterface $service)
     {
         try {
-            $task = $service->getTaskById($id);
+            $task = $service->getTaskByCode($id);
 
-            return ResponseHandler::success($task, 'Tarea Obtenida Correctamente', 200);
+            return ResponseHandler::success(new TaskResource($task), 'Tarea Obtenida Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }
@@ -68,7 +68,7 @@ class TaskController extends Controller
         try {
             $data = $request->validated();
 
-            $service->updateTaskById($data, $id);
+            $service->updateTaskByCode($data, $id);
 
             return ResponseHandler::success(null, 'Tarea Actualizada Correctamente', 200);
         } catch (\Throwable $th) {

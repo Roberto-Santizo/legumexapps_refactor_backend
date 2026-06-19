@@ -5,6 +5,7 @@ namespace App\Services\Agricola;
 use App\Errors\NotFoundError;
 use App\Interfaces\Agricola\CdpServiceInterface;
 use App\Models\Agricola\Cdp;
+use Override;
 
 class CdpService implements CdpServiceInterface
 {
@@ -36,10 +37,26 @@ class CdpService implements CdpServiceInterface
         return $cdp;
     }
 
+    public function getCdpByCode(string $code)
+    {
+        $cdp = Cdp::where('name', '=', $code, null)->first();
+
+        if (!$cdp) throw new NotFoundError("El CDP no existe");
+
+        return $cdp;
+    }
+
     public function updateCdpById(array $data, string $id)
     {
         $this->getCdpById($id);
         $cdp = Cdp::where('id', '=', $id, null)->update($data);
+        return $cdp;
+    }
+
+    public function updateCdpByCode(array $data, string $code)
+    {
+        $this->getCdpByCode($code);
+        $cdp = Cdp::where('name', '=', $code, null)->update($data);
         return $cdp;
     }
 }

@@ -19,8 +19,8 @@ class CdpResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'start_date' => $this->start_date->format('d-m-Y'),
-            'end_date' => $end_date ? $end_date->format('d-m-Y') : null,
+            'start_date' => $this->start_date->format('Y-m-d'),
+            'end_date' => $end_date ? $end_date->format('Y-m-d') : null,
             'total_plants' => $this->total_plants,
             'lote_id' => $this->lote_id,
             'recipe_id' => $this->recipe_id,

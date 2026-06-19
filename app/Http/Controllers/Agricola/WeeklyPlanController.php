@@ -9,7 +9,6 @@ use App\Http\Requests\Shared\UploadFileRequest;
 use App\Http\Resources\Agricola\PaginatedWeeklyPlansResource;
 use App\Http\Resources\Agricola\WeeklyPlanResource;
 use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
-use App\Models\Agricola\WeeklyPlan;
 use Illuminate\Http\Request;
 
 class WeeklyPlanController extends Controller
@@ -53,7 +52,22 @@ class WeeklyPlanController extends Controller
         try {
             $weekly_plan = $service->getWeeklyPlanById($id);
 
-            return ResponseHandler::success($weekly_plan, 'Plan Semanal Creado Correctamente', 200);
+            return ResponseHandler::success(new WeeklyPlanResource($weekly_plan), 'Plan Semanal Creado Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function update(CreateWeeklyPlanRequest $request, string $id, WeeklyPlanServiceInterface $service)
+    {
+        try {
+            $data = $request->validated();
+            $service->updateWeeklyPlan($data, $id);
+
+            return ResponseHandler::success(null, 'Plan Semanal Creado Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

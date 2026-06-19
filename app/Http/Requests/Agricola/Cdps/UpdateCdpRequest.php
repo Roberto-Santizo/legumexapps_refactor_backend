@@ -23,15 +23,14 @@ class UpdateCdpRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('cdp')?->id ?? $this->route('cdp');
-
         return [
-            'name' => ['required', Rule::unique('plantation_controls', 'name')->ignore($id), 'max:15'],
+            'name' => ['required', Rule::unique('plantation_controls', 'name')->ignore($this->route('cdp'), 'name')],
             'total_plants' => ['required', 'numeric'],
             'lote_id' => ['required', 'numeric', 'exists:lotes,id'],
             'recipe_id' => ['required', 'numeric', 'exists:recipes,id'],
             'crop_id' => ['required', 'numeric', 'exists:crops,id'],
-            'start_date' => ['required', 'date']
+            'start_date' => ['required', 'date'],
+            'end_date' => ['sometimes', 'date']
         ];
     }
 
@@ -54,6 +53,7 @@ class UpdateCdpRequest extends FormRequest
             'crop_id.exists' => 'El cultivo no existe',
             'start_date.required' => 'La fecha de inicio es requerida',
             'start_date.date' => 'La fecha de inicio debe de tener formato de fecha',
+            'end_date.date' => 'La fecha final debe de tener formato de fecha',
         ];
     }
 }
