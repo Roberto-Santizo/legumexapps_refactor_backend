@@ -26,7 +26,7 @@ class CreateWeeklyPlanEmployeeRequest extends FormRequest
             'name' => ['required', 'string'],
             'code' => ['required', 'string'],
             'weekly_plan_id' => ['required', 'exists:weekly_plans,id'],
-            'finca_group_id' => ['sometimes', 'exists:finca_groups,id']
+            'finca_group_id' => ['required', 'exists:finca_groups,id']
         ];
     }
 

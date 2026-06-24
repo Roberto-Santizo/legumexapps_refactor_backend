@@ -26,6 +26,8 @@ class UpdateWeeklyPlanTaskRequest extends FormRequest
             'budget' =>                         ['required', 'numeric', 'min:1'],
             'hours' =>                          ['required', 'numeric'],
             'operation_date' =>                 ['sometimes', 'nullable', 'date'],
+            'start_date' =>                     ['sometimes', 'nullable', 'date'],
+            'end_date' =>                       ['sometimes', 'nullable', 'date'],
             'extraordinary' =>                  ['required', 'boolean'],
             'weekly_plan_id' =>                 ['required', 'numeric', 'exists:weekly_plans,id'],
             'tarea_id' =>                       ['required', 'numeric', 'exists:tareas,id'],

@@ -5,7 +5,7 @@ namespace App\Http\Resources\Agricola;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WeeklyPlanEmployeeResource extends JsonResource
+class FincaGroupDetailsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,15 +14,15 @@ class WeeklyPlanEmployeeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $employees = WeeklyPlanEmployeeResource::collection($this->employees);
         return [
             'id' => $this->id,
             'code' => $this->code,
-            'name' => $this->name,
-            'weekly_plan_id' => $this->weekly_plan_id,
-            'finca_group_id' => $this->finca_group_id,
-            'group' => $this->group->code,
-            'addedAt' => $this->created_at->format('d-m-Y h:m:s A')
+            'lote_id' => $this->lote_id,
+            'lote' => $this->lote->name,
+            'finca_id' => $this->finca_id,
+            'finca' => $this->finca->name,
+            'employees' => $employees
         ];
-
     }
 }

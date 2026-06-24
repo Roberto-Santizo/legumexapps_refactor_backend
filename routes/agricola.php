@@ -35,13 +35,16 @@ Route::middleware('jwt.auth')->group(function () {
 //FUNCTIONALITYS
 Route::middleware('jwt.auth')->group(function () {
     //TASKS
-    Route::post('/tasks/uploadFile',                                        [TaskController::class, 'uploadFile']);
+    Route::post('/tasks/uploadFile',                                                [TaskController::class, 'uploadFile']);
 
     //WEEKLY PLANS
-    Route::post('/weekly-plans/uploadTasks/{id}',                           [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']);
+    Route::post('/weekly-plans/uploadTasks/{id}',                                   [WeeklyPlanController::class, 'uploadTasksToWeeklyPlan']);
 
     //WEEKLY PLANS EMPLOYEE
-    Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',     [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']);
+    Route::post('/weekly-plan-employees/addEmployeesToFincaGroup/{id}',             [WeeklyPlanEmployeeController::class, 'addEmployeesToFincaGroup']);
+
+    //FINCA GROUPS
+    Route::get('/finca-groups/groupsSummaryByWeeklyPlan/{id}',                      [FincaGroupController::class, 'groupsSummaryByWeeklyPlan']);
 
     //WEEKLY PLAN TASKS
     Route::get('/weekly-plan-tasks/getTasksForCalendar/{weeklyPlanId}',             [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksForCalendar']);
@@ -49,4 +52,5 @@ Route::middleware('jwt.auth')->group(function () {
     Route::get('/weekly-plan-tasks/getTasksByCdp/{weeklyPlanId}/{cdp}',             [WeeklyPlanTaskController::class, 'getWeeklyPlanTasksByCdp']);
     Route::post('/weekly-plan-tasks/startTask/{id}',                                [WeeklyPlanTaskController::class, 'startWeeklyPlanTask']);
     Route::post('/weekly-plan-tasks/closeTask/{id}',                                [WeeklyPlanTaskController::class, 'closeWeeklyPlanTask']);
+    Route::post('/weekly-plan-tasks/cleanTask/{id}',                                    [WeeklyPlanTaskController::class, 'cleanWeeklyPlanTask']);
 });

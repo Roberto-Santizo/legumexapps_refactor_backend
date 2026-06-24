@@ -34,11 +34,19 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     }
 
     #[Override]
-    public function getWeeklyPlanTasks(?string $limit, ?string $id)
+    public function getWeeklyPlanTasks(?string $limit, ?string $id, ?string $taskName)
     {
         if (!$id) throw new BadRequestError("El ID del plan es requerido");
-        $tasks = WeeklyPlanTask::where('weekly_plan_id', '=', $id, null)->get();
-        return $tasks;
+        $query = WeeklyPlanTask::query();
+        $query->where('weekly_plan_id', $id);
+
+        if ($taskName) {
+            $query->whereHas('task', function ($q) use ($taskName) {
+                $q->where('name', 'LIKE', '%' . $taskName . '%');
+            });
+        }
+
+        return $query->get();
     }
 
     #[Override]
@@ -52,8 +60,8 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     #[Override]
     public function getWeeklyPlanTaskById(string $id)
     {
-        $task = WeeklyPlanTask::find($id, ['*']);
-        if (!$task) throw new NotFoundError("La tarea no existe");
+        $task = WeeklyPlanTask::where('id', $id)->first();
+        if (!$task) throw new NotFoundError("La tarea semanal no existe");
         return $task;
     }
 
@@ -101,6 +109,17 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     }
 
     #[Override]
+    public function cleanWeeklyPlanTask(string $id)
+    {
+        $task = $this->getWeeklyPlanTaskById($id);
+        $task->employees()->delete();
+        $task->start_date = null;
+        $task->end_date = null;
+        $task->save();
+        return true;
+    }
+
+    #[Override]
     public function getWeeklyPlanTasksForCalendar(string $id)
     {
         $tasks = $this->getWeeklyPlanTasks(null, $id);
@@ -115,6 +134,7 @@ class WeeklyPlanTaskService implements WeeklyPlanTaskServiceInterface
     public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp)
     {
         $tasks = WeeklyPlanTask::where('weekly_plan_id', $weeklyPlanId)
+            ->whereNot('finca_group_id', null)
             ->whereHas('cdp', fn($q) => $q->where('name', $cdp))
             ->with('cdp')
             ->get();

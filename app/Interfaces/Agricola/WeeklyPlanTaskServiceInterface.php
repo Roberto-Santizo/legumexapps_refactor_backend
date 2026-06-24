@@ -5,7 +5,7 @@ namespace App\Interfaces\Agricola;
 interface WeeklyPlanTaskServiceInterface
 {
     public function createWeeklyPlanTask(array $data);
-    public function getWeeklyPlanTasks(?string $limit, ?string $id);
+    public function getWeeklyPlanTasks(?string $limit, ?string $id, ?string $taskName);
     public function getWeeklyPlanTasksByLote(?string $id);
     public function getWeeklyPlanTaskById(string $id);
     public function updateWeeklyPlanTaskById(array $data, string $id);
@@ -14,4 +14,6 @@ interface WeeklyPlanTaskServiceInterface
     public function closeWeeklyPlanTask(string $id);
     public function getWeeklyPlanTasksForCalendar(string $id);
     public function getWeeklyPlanTasksByCdp(string $weeklyPlanId, string $cdp);
+    public function cleanWeeklyPlanTask(string $id);
+
 }

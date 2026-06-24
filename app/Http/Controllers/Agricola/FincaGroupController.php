@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Agricola;
 use App\Helpers\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agricola\FincaGroups\CreateFincaGroupRequest;
+use App\Http\Resources\Agricola\FincaGroupDetailsResource;
 use App\Http\Resources\Agricola\FincaGroupResource;
+use App\Http\Resources\Agricola\FincaGroupsSummaryResource;
 use App\Http\Resources\Agricola\PaginatedFincaGroupsResource;
 use App\Interfaces\Agricola\FincaGroupServiceInterface;
-
+use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use Illuminate\Http\Request;
 
 class FincaGroupController extends Controller
@@ -47,13 +49,27 @@ class FincaGroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id, FincaGroupServiceInterface $service)
+    public function show(Request $request, string $id, FincaGroupServiceInterface $service)
     {
         try {
-            $group = $service->getGroupByCode($id);
-            $data = new FincaGroupResource($group);
+            $planId = $request->query('weeklyPlanId');
+
+            $group = $service->getGroupByCode($id, $planId);
+            $data = new FincaGroupDetailsResource($group);
 
             return ResponseHandler::success($data, 'Grupo Obtenido Correctamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function groupsSummaryByWeeklyPlan(string $id, FincaGroupServiceInterface $service, WeeklyPlanServiceInterface $weeklyPlanService)
+    {
+        try {
+            $plan = $weeklyPlanService->getWeeklyPlanById($id);
+            $groups = $service->getGroupsSummaryByWeeklyPlan($plan);
+
+            return ResponseHandler::success(FincaGroupsSummaryResource::collection($groups), 'Grupos Obtenidos Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

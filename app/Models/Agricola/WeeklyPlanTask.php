@@ -41,4 +41,9 @@ class WeeklyPlanTask extends Model
     {
         return $this->hasMany(WeeklyPlanTaskInsumo::class, 'task_weekly_plan_id', 'id');
     }
+
+    public function employees()
+    {
+        return $this->hasMany(WeeklyPlanTaskEmployee::class, 'task_weekly_plan_id', 'id');
+    }
 }
