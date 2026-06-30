@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('crop_steps', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('crop_id')->constrained();
             $table->integer('step_order');
-            $table->string('target');
+            $table->string('result_key');
             $table->string('operation');
             $table->string('left');
             $table->string('right');

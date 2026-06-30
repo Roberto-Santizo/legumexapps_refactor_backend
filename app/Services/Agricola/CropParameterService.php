@@ -21,14 +21,14 @@ class CropParameterService implements CropParameterServiceInterface
     public function getCropParameters(?string $cropId)
     {
         if (!$cropId) throw new BadRequestError("El ID del cultivo es necesario");
-        $parameters = CropParameter::where('crop_id', $cropId);
+        $parameters = CropParameter::where('crop_id', $cropId)->get(['id', 'crop_id', 'key', 'value']);
         return $parameters;
     }
 
     #[Override]
     public function getCropParameterById(string $id)
     {
-        $cropParameter = CropParameter::find($id, ['*']);
+        $cropParameter = CropParameter::find($id, ['id', 'crop_id', 'key', 'value']);
         if (!$cropParameter) throw new NotFoundError("El parametro no existe");
         return $cropParameter;
     }
