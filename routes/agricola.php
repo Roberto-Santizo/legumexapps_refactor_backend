@@ -68,6 +68,7 @@ Route::middleware('jwt.auth')->group(function () {
     
     //WEEKLY PLAN TASKS CROP
     Route::get('/weekly-plan-tasks-crops/getTasksForCalendar/{weeklyPlanId}',       [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksForCalendar']);
+    Route::get('/weekly-plan-tasks-crops/getTasksGroupedByCdp/{weeklyPlanId}',      [WeeklyPlanTaskCropController::class, 'getWeeklyPlanTasksGroupByCdp']);
     
     //PARTIAL CLOSURES
     Route::post('/weekly-plan-task-partial-closures/addOrUpdate',                   [WeeklyPlanTaskPartialClosureController::class, 'addOrUpdatePartialClosure']);

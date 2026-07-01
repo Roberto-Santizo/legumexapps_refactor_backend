@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Helpers\ResponseHandler;
 use App\Http\Requests\Agricola\WeeklyPlanTaskCrop\CreateWeeklyPlanTaskCropRequest;
 use App\Http\Resources\Agricola\WeeklyPlanTaskCropResource;
+use App\Http\Resources\Agricola\WeeklyPlanTasksCropGroupedByCdpResource;
 use App\Http\Resources\Agricola\WeeklyPlanTasksCropsForCalendarResource;
+use App\Interfaces\Agricola\WeeklyPlanServiceInterface;
 use App\Interfaces\Agricola\WeeklyPlanTaskCropServiceInterface;
+use App\Services\Agricola\WeeklyPlanTaskService;
 use Illuminate\Http\Request;
 
 class WeeklyPlanTaskCropController extends Controller
@@ -91,8 +94,19 @@ class WeeklyPlanTaskCropController extends Controller
             $tasks = $service->getWeeklyPlanTasksCrop($weeklyPlanId);
             $data = WeeklyPlanTasksCropsForCalendarResource::collection($tasks);
 
-            
-            return ResponseHandler::success($data, 'Tareas de Cosecha Obtenidas Correctamente', 200);
+
+            return ResponseHandler::success($data, 'Tareas de Cosecha Obtenidas CorrWeeklyPlanTaskCropServiceInterfaceectamente', 200);
+        } catch (\Throwable $th) {
+            return ResponseHandler::error($th);
+        }
+    }
+
+    public function getWeeklyPlanTasksGroupByCdp(string $weeklyPlanId, WeeklyPlanServiceInterface $service)
+    {
+        try {
+            $plan = $service->getWeeklyPlanById($weeklyPlanId);
+
+            return ResponseHandler::success(new WeeklyPlanTasksCropGroupedByCdpResource($plan), 'Tareas de Cosecha Obtenidas Correctamente', 200);
         } catch (\Throwable $th) {
             return ResponseHandler::error($th);
         }

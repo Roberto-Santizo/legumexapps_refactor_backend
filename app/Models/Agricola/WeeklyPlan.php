@@ -61,4 +61,9 @@ class WeeklyPlan extends Model
     {
         return $this->hasMany(WeeklyPlanTask::class, 'weekly_plan_id', 'id');
     }
+
+    public function tasksCrops()
+    {
+        return $this->hasMany(WeeklyPlanTaskCrop::class, 'weekly_plan_id', 'id');
+    }
 }
